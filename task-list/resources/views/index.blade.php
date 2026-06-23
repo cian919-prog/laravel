@@ -1,2 +1,17 @@
-im julian and i love little furries and dress up as them <br> <br>  
-{{ $name}}
+<h1> julian is een furry</h1>
+
+
+<div>
+
+
+    {{-- @if(count($tasks) ) --}}
+    @forelse($tasks as $task )
+
+<a href="{{route('task.show', ['id' => $task->id])}}">{{$task->title}}</a>
+<br>
+    @empty
+    <p> no tasks</p>
+    @endforelse
+
+    {{-- @endif --}}
+</div>
