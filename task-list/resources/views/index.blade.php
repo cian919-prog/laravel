@@ -1,7 +1,10 @@
-<h1> julian is een furry</h1>
+@extends('layouts.app')
+@section('title', 'task list GELLO')
+
+ 
+@section('content')
 
 
-<div>
 
 
     {{-- @if(count($tasks) ) --}}
@@ -13,5 +16,6 @@
     <p> no tasks</p>
     @endforelse
 
-    {{-- @endif --}}
-</div>
+
+
+@endsection
