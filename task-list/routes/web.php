@@ -1,6 +1,7 @@
 <?php
 
-
+use App\Http\Requests\TaskRequest;
+use App\Models\Task;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
@@ -17,27 +18,41 @@ Route::get('/', function() {
 
 Route::get('/tasks', function ()  {
     return view('index', [
-        'tasks' => \App\Models\Task::latest()->get()
+        'tasks' => Task::latest()->get()
 
     ]);
 })->name('task.index');
 
 Route::view('/tasks/create', 'create')
-->name('tasks.create');
+->name('task.create');
 
-Route::get('/tasks/{id}', function($id)   {
-    return view('show', ['tasks'=> \App\Models\Task::findOrFail($id)]);
+Route::get('/tasks/{task}/edit', function(Task  $task)   {
+    return view('edit', [
+        'tasks' => $task
+    ]);
+})->name('task.edit');
+
+
+Route::get('/tasks/{task}', function(Task $task)   {
+    return view('show', ['tasks'=> $task]);
 })->name('task.show');
 
+Route::put('/tasks/{task}', function(Task $task, TaskRequest $request) {
 
-Route::post('/tasks', function(Request $request) {
-    $data = $request->validate([
-        'title' => 'required|max:255',
-        'description' => 'required',
-        'long_description' => 'nullable',
-        'completed' => 'boolean'
-    ]);
-})->name('tasks.store');
+    $task->update($request->validated());
+
+    return redirect()->route('task.show', ['task' => $task->id])
+    ->with('success','task updated succesfully');
+})->name('task.update');
+
+
+Route::post('/tasks', function(TaskRequest $request) {
+
+     $task = Task::create($request->validated());
+
+    return redirect()->route('task.show', ['task' => $task->id])
+    ->with('success','task created succesfully');
+})->name('task.store');
 
 
 // Route::get('/julian', function () {
