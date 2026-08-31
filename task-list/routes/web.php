@@ -54,6 +54,13 @@ Route::post('/tasks', function(TaskRequest $request) {
     ->with('success','task created succesfully');
 })->name('task.store');
 
+Route::delete('tasks/{task}', function(Task $task) {
+
+    $task->delete();
+    return redirect()->route('task.index')
+    ->with('success', ' Task deleted succesfully ');
+})->name('task.delete');
+
 
 // Route::get('/julian', function () {
 //     return 'julian is een dikke furry';
