@@ -18,7 +18,7 @@ Route::get('/', function() {
 
 Route::get('/tasks', function ()  {
     return view('index', [
-        'tasks' => Task::latest()->get()
+        'tasks' => Task::latest()->paginate(10)
 
     ]);
 })->name('task.index');
@@ -61,6 +61,10 @@ Route::delete('tasks/{task}', function(Task $task) {
     ->with('success', ' Task deleted succesfully ');
 })->name('task.delete');
 
+Route::put('tasks/{task}/toggle-complete', function(Task $task) {
+        $task->toggleComplete();
+    return redirect()->route('task.show', ['task' => $task->id])->with('success', 'Task completion status updated successfully');
+})->name('task.complete');
 
 // Route::get('/julian', function () {
 //     return 'julian is een dikke furry';
